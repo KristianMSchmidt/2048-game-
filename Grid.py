@@ -1,4 +1,6 @@
 import random
+from copy import deepcopy
+from merge import merge
 
 # Directions
 UP = 1
@@ -8,40 +10,6 @@ RIGHT = 4
 
 # Offsets for computing tile indices in each direction.
 OFFSETS = {UP: (1, 0), DOWN: (-1, 0), LEFT: (0, 1), RIGHT: (0, -1)}
-
-def merge(line):
-    """
-    Helper function that merges a single row or column in 2048
-    """
-    non_zeros=[]
-    zeros=[]
-    tiles=[]
-    actual_is_tiled=False
-
-    for number in line:
-        if number != 0:
-            non_zeros.append(number)
-        else:
-            zeros.append(0)
-
-    for index in range(len(non_zeros)):
-        actual=non_zeros[index]
-
-        if actual_is_tiled:
-            zeros.append(0)
-            actual_is_tiled=False
-        elif index<len(non_zeros) - 1:
-            next_num=non_zeros[index + 1]
-            if actual != next_num:
-                tiles.append(actual)
-            else:
-                tiles.append(actual + next_num)
-                actual_is_tiled = True
-        else:
-            tiles.append(actual)
-
-    return tiles+zeros
-
 
 class Grid:
     """
@@ -53,12 +21,12 @@ class Grid:
         """
         self._height = grid_height
         self._width = grid_width
-        self._map = self.reset()
+        self.reset()
         up_tiles = [(0, colon) for colon in range(grid_width)]
         down_tiles = [(grid_height - 1, colon) for colon in range(grid_width)]
         left_tiles =  [(row, 0) for row in range(grid_height)]
         right_tiles = [(row, grid_width - 1) for row in range(grid_height)]
-        self._initial_tiles = {UP:up_tiles, DOWN:down_tiles, LEFT:left_tiles, RIGHT:right_tiles}
+        self._initial_tiles = {UP: up_tiles, DOWN: down_tiles, LEFT: left_tiles, RIGHT: right_tiles}
     
     def __str__(self):
         """
@@ -73,12 +41,10 @@ class Grid:
         """
         Reset the game so the grid is empty except for two initial tiles.
         """
-        zero_map = [[0 for dummy_number in range(self._width)] for dummy_number in range(self._height)]
+        zero_map = [[0 for _ in range(self._width)] for _ in range(self._height)]
         self._map = zero_map
         self.new_tile()
         self.new_tile()
-        return(zero_map)
-
 
     def get_grid_height(self):
         """
@@ -123,22 +89,49 @@ class Grid:
                 self.set_tile(tile_row,tile_col,tile_value)
                 return ()
 
+    def get_max_tile(self):
+        max_tile = 0
+
+        for row in range(self._height):
+            for col in range(self._width):
+                max_tile = max(max_tile, self._map[row][col])
+
+        return max_tile
+    
+    def get_available_cells(self):
+        cells = []
+        for row in range(self._height):
+            for col in range(self._width):
+                if self._map[row][col] == 0:
+                    cells.append((row, col))
+        return cells
+
+
+    def clone(self):
+        """
+        Make a Deep Copy of This Object
+        """
+        gridCopy = Grid(self._height, self._width)
+        gridCopy._map = deepcopy(self._map)
+        gridCopy._height = self._height
+        gridCopy._width = self._width        
+        return gridCopy
+
     def move(self, direction):
         """
         Move all tiles in the given direction and add
         a new tile if any tiles moved.
         """
-
         if direction < 3:
             len_of_lists_to_be_merged = self._height
         
         else:
             len_of_lists_to_be_merged = self._width
 
-        changed=False
+        changed = False
 
         for tile in self._initial_tiles[direction]:
-            to_be_merged=[]
+            to_be_merged = []
             for step in range(len_of_lists_to_be_merged):
                 row = tile[0] + step * OFFSETS[direction][0]
                 col = tile[1] + step * OFFSETS[direction][1]
@@ -156,38 +149,28 @@ class Grid:
         if changed:
             self.new_tile()
 
-    def can_move(self, dirs = range(4)):
+        return changed
 
-        # Init Moves to be Checked
-        checkingMoves = set(dirs)
-        for x in range(self._height):
-            for y in range(self._width):
+    # Return All Available Moves
+    def get_available_moves(self):
+        available_moves = []
 
-                # If Current Cell is Filled
-                if self._map[x][y]:
+        for dir in [UP, DOWN, LEFT, RIGHT]:
+            gridCopy = self.clone() 
+            if gridCopy.move(dir):
+                available_moves.append(dir)
 
-                    # Look Adjacent Cell Value
-                    for i in checkingMoves:
-                        move = directionVectors[i]
-
-                        adjCellValue = self.getCellValue((x + move[0], y + move[1]))
-
-                        # If Value is the Same or Adjacent Cell is Empty
-                        if adjCellValue == self.map[x][y] or adjCellValue == 0:
-                            return True
-
-                # Else if Current Cell is Empty
-                elif self._map[x][y] == 0:
-                    return True
-
-        return False
-
+        return available_moves
 
 if __name__ == "__main__":
-    g = Grid(4, 4)
-    g.set_tile(1, 1, 64)
-    g.set_tile(2, 1, 64)
+    g = Grid(4,4)
+    g._map = [
+    [8, 4, 2, 2],
+    [2, 8, 4, 2],
+    [8, 64, 16, 2],
+    [2, 4, 128, 8]
+    ] 
     print(g)
-    g.move(2)
-    print(g)
+    print(g.get_max_tile())
+
 
