@@ -90,6 +90,9 @@ class Grid:
                 return ()
 
     def get_max_tile(self):
+        """
+        Fetches the maximal tile value 
+        """
         max_tile = 0
 
         for row in range(self._height):
@@ -99,6 +102,9 @@ class Grid:
         return max_tile
     
     def get_available_cells(self):
+        """
+        Fetches list of tuples of the empty cells
+        """
         cells = []
         for row in range(self._height):
             for col in range(self._width):
@@ -119,10 +125,10 @@ class Grid:
 
     def move(self, direction):
         """
-        Move all tiles in the given direction and add
-        a new tile if any tiles moved.
+        Move all tiles in the given direction. 
+        Return true if change has happened. Else false.
         """
-        if direction < 3:
+        if direction in [UP, DOWN]:
             len_of_lists_to_be_merged = self._height
         
         else:
@@ -145,9 +151,6 @@ class Grid:
                 if self.get_tile(row, col) != merged[step]:
                     changed = True
                 self.set_tile(row, col, merged[step])
-
-        if changed:
-            self.new_tile()
 
         return changed
 

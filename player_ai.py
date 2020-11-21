@@ -1,13 +1,31 @@
 """
 AI-player for the 2048 game.
 """
-#from gradient_heuristic import heuristic 
-from h1 import heuristic
-
 import time
 import random
+
+from gradient_heuristic import gradient_heuristic as monotonicity
+#from monotonicity import monotonicity 
+from smoothness import smoothness 
+
+
+def heuristic(grid):
+    max_tile = grid.get_max_tile()
+    if max_tile == 2048:
+        return float('inf')
+    elif len(grid.get_available_moves()) == 0:
+        return -float('inf')
+
+    #max_tile = grid.get_max_tile()
+    zeros = len(grid.get_available_cells())
+    
+    
+    #IKKE DÅRLIG
+    score = 0.1*smoothness(grid) + monotonicity(grid) + 0.35*zeros 
+    return score
+    
 # Time Limit For Each Move
-time_limit = 0.5
+time_limit = 0.2
  
 class PlayerAI():
 
@@ -17,26 +35,24 @@ class PlayerAI():
         """
         start_time = time.time()
         best_move = random.choice(grid.get_available_moves())
-        best_score = - float('inf')
+        depth = -1
+        score_of_best_move = None
         alpha = - float('inf')   #Best choice for max so far in search
         beta = float('inf')     #Best choice for min so far in search
-        depth = 0
         time_spend = time.time() - start_time
-       
+                
         while (time_spend < time_limit):
             try:
+                depth += 1
                 score, move = self.minimax_alpha_beta_DLS(grid, depth, True, None, alpha, beta, start_time)
                 if move:
                     best_move = move
-                    if move != best_move:
-                        print("New best move: ", best_move)      
-                depth += 1
-                
+                    score_of_best_move = score
                 time_spend = time.time() - start_time
             except:
                 break   
         
-        print("Best move, depth, time_spend", best_move, depth, time.time()-start_time)
+        print("Best move, score, depth, time_spend", best_move, score_of_best_move, depth, time.time()-start_time)
         return best_move
     
     def minimax_alpha_beta_DLS(self, grid, depth, players_turn, first_move, alpha, beta, start_time):
@@ -45,7 +61,7 @@ class PlayerAI():
         Returns (best_score, best_move) found, given the specified depth.
         """
         if time.time() - start_time > time_limit:
-            print("Time is up")
+            #print("Time is up")
             raise Exception
 
         if depth == 0:
@@ -55,9 +71,9 @@ class PlayerAI():
             moves = grid.get_available_moves()
 
             if moves == []:
-                return heuristic(grid), first_move
+                return heuristic(grid), first_move   #this heuristic should be -infinity
 
-            max_value = (- float('inf'), None)
+            max_value = (-float('inf'), None)
             for move in moves:
                 child = grid.clone()
                 child.move(move)
@@ -69,7 +85,6 @@ class PlayerAI():
                     max_value = max(max_value, value)
                 except: 
                     max_value = value
-
                 alpha = max(alpha, max_value[0])
                 if beta <= alpha:
                     #print "Beta cuf off!"
@@ -77,7 +92,7 @@ class PlayerAI():
 
             return max_value
 
-        else: # Minimizing player
+        else: # Computer's turn (The Minimizing player)
             cells = grid.get_available_cells()
             min_value = (float('inf'), None)
 
@@ -91,17 +106,14 @@ class PlayerAI():
                 child.set_tile(cell[0], cell[1], 4)
                 value_4 = self.minimax_alpha_beta_DLS(child, 
                                 depth - 1, True, first_move, alpha,beta, start_time)
-
                 try:
                     min_value = min(min_value, value_2, value_4)
                 except: 
                     raise Exception("min!")
-
                 try:
                     beta = min(beta, min_value[0])
                 except: 
                     raise Exception("min2!")
-
                 if beta <= alpha:
                     #print "Alpha cuf off!"
                     break #cut of branch
@@ -121,21 +133,21 @@ class PlayerAI():
             move = self.minimax_alpha_beta_IDDFS(grid)
             return move
 
-
 if __name__ == "__main__":
     from Grid import Grid
     g = Grid(4, 4)
-    
-    ai = PlayerAI()    
+    ai = PlayerAI()
+    print(g)    
+    print(monotonicity(g))
     for move_num in range(10000):
         print("")
-        print("MOVE NUMBER: ", move_num)
-        print("GRID BEFORE NOVE:")
-        print(g)
+        print("MOVE NUMBER: ", move_num+1)
         move = ai.get_move(g)
         print("MOVE FROM GET_MOVE", move)
         if move:
             g.move(move)
+            g.new_tile()
+            print(g)
         else: 
-            print("Game over?")
+            print("game over?")
             break

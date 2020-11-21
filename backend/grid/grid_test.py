@@ -1,28 +1,26 @@
 import unittest
-from Grid import Grid
-from Grid import UP, DOWN, LEFT, RIGHT
-from player_ai import PlayerAI
-from mixed_heuristic import heuristic as mixed_heuristic
-from gradient_heuristic import heuristic as gradient_heuristic
-from merge import merge
+import merge
+from Grid import Grid, UP, DOWN, LEFT, RIGHT
 
-class test_grid(unittest.TestCase):
+class Gridtest(unittest.TestCase):
 
     def test_merge(self):
-        """ Testing the merge function 
-            From wiki: Tiles slide as far as possible in the chosen direction
-            until they are stopped by either another tile or the edge of the 
-            grid. If two tiles of the same number collide while moving, they 
-            will merge into a tile with the total value of the two tiles that 
-            collided. The resulting tile cannot merge with another tile again 
-            in the same move. Higher-scoring tiles emit a soft glow.
+        """ 
+        Testing the merge function 
 
-            If a move causes three consecutive tiles of the same value to slide 
-            together, only the two tiles farthest along the direction of motion 
-            will combine. If all four spaces in a row or column are filled with
-            tiles of the same value, a move parallel to that row/column will 
-            combine the first two and last two."""
+        From wiki: Tiles slide as far as possible in the chosen direction
+        until they are stopped by either another tile or the edge of the 
+        grid. If two tiles of the same number collide while moving, they 
+        will merge into a tile with the total value of the two tiles that 
+        collided. The resulting tile cannot merge with another tile again 
+        in the same move. Higher-scoring tiles emit a soft glow.
 
+        If a move causes three consecutive tiles of the same value to slide 
+        together, only the two tiles farthest along the direction of motion 
+        will combine. If all four spaces in a row or column are filled with
+        tiles of the same value, a move parallel to that row/column will 
+        combine the first two and last two.
+        """
         actual = merge([0,2,4,8])
         expected = [2,4,8,0]
         self.assertEqual(actual, expected)
@@ -159,7 +157,7 @@ class test_grid(unittest.TestCase):
         
         self.assertEqual(g.get_available_moves(), [DOWN, LEFT, RIGHT]) 
 
-    def test_move3x3(self):
+    def test_move(self):
         g = Grid(3, 3)
         g._map = [
             [1,2,3],
@@ -194,9 +192,9 @@ class test_grid(unittest.TestCase):
         self.assertEqual(g.move(UP), False)
         self.assertEqual(g.move(LEFT), False)
         self.assertEqual(g.move(RIGHT), True)
-        self.assertEqual(g.move(DOWN), False)
         self.assertEqual(g.get_tile(2,2), 8)
 
+        g = Grid(4,4)
         g._map = [
             [8, 4, 2, 2],
             [2, 8, 4, 2],
@@ -205,8 +203,6 @@ class test_grid(unittest.TestCase):
         ] 
         self.assertEqual(g.get_available_moves(), [UP, DOWN, LEFT, RIGHT])
 
-    def test_move3x3(self):
-        g = Grid(4, 4)
         g._map = [
             [1,2,3,4],
             [5,6,7,8],
@@ -336,8 +332,17 @@ class test_grid(unittest.TestCase):
         self.assertEqual(g.get_tile(1,1),4)
         self.assertEqual(g.get_tile(2,1),4)
 
+    def test_clone(self):
+        g = Grid(3,3)
+        g._map = [
+            [2,2,2],
+            [2,2,4],
+            [6,2,2]
+        ]
+        clone = g.clone()
+        self.assertEqual(clone._map, g._map)
+        clone.move(UP)
+        self.assertNotEqual(clone._map, g._map)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-
-   
