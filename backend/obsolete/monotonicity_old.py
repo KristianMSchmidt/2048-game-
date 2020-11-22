@@ -1,3 +1,9 @@
+"""
+Monotonicity score of grid to be used in heuristic.
+
+Obsolete. Not used in current heuristic function.
+"""
+
 def mono_count(row):
     """
     Helper function
@@ -30,14 +36,5 @@ def monotonicity(grid):
 
     return abs(row_mono) + abs(col_mono)
 
-if __name__ == "__main__":
-    from Grid import Grid
-    grid = Grid(2,3)
-    grid._map = [
-        [3,4,2],
-        [2,4,7],
-        [10,1,2]
-        ]
-    print(monotonicity(grid))
-   
 
+    
