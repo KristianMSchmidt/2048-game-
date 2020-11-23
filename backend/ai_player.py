@@ -12,12 +12,12 @@ class AI_player:
 
     def make_move(self):
         """
-        Make a single move
+        Make a single move & update grid with new tile. 
         """
-        move = get_move(self.grid, self.time_limit)
-        if move:
-            self.grid.move(move)
-            self.grid.new_tile() # don't forget this
+        move = get_move(self.grid, self.time_limit)  # this merely calculates the move
+        if move:  #if move is none, the game is over
+            self.grid.move(move) # now the grid is actually moved
+            self.grid.new_tile() 
             return move
     
     def autoplay(self, verbose = True):
