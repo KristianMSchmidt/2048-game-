@@ -31,7 +31,7 @@ class Grid:
         """
         Return a string representation of the grid for debugging.
         """
-        s = str(self._height) + "x" + str(self._width) + " grid: \n"
+        s = ""
         for row in self._map:
             s += str(row) + "\n"
         return(s)
@@ -152,8 +152,10 @@ class Grid:
 
         return changed
 
-    # Return All Available Moves
     def get_available_moves(self):
+        """
+        Returns list og available moves
+        """
         available_moves = []
 
         for dir in [UP, DOWN, LEFT, RIGHT]:
@@ -162,6 +164,7 @@ class Grid:
                 available_moves.append(dir)
 
         return available_moves
+
 
 def merge(line):
     """
@@ -196,5 +199,4 @@ def merge(line):
             tiles.append(actual)
 
     return tiles + zeros
-
 

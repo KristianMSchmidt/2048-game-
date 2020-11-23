@@ -1,5 +1,5 @@
 """
-Get AI-move by recursive, depth-limited minimax search
+Get AI-move by recursive, depth-limited minimax search with alpha-beta pruning
 """
 from time import time
 from heuristic import heuristic
@@ -16,7 +16,7 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
     if time() - start_time > time_limit:
         # If no more time, raise exeption. 
         # This will immediately stop the search at the current depth level. 
-        print("No more time")
+        # print("No more time")
         raise Exception("No more time")
 
     if do_pruning:
