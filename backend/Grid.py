@@ -1,6 +1,5 @@
 import random
 from copy import deepcopy
-from merge import merge
 
 # Directions
 UP = 1
@@ -13,7 +12,7 @@ OFFSETS = {UP: (1, 0), DOWN: (-1, 0), LEFT: (0, 1), RIGHT: (0, -1)}
 
 class Grid:
     """
-    Class to run the game logic.
+    Class to control the basic game logic - moves, new tiles, etc.
     """
     def __init__(self, grid_height, grid_width):
         """
@@ -32,7 +31,7 @@ class Grid:
         """
         Return a string representation of the grid for debugging.
         """
-        s = str(self._height) + "x" + str(self._width) + " grid: \n"
+        s = ""
         for row in self._map:
             s += str(row) + "\n"
         return(s)
@@ -112,7 +111,6 @@ class Grid:
                     cells.append((row, col))
         return cells
 
-
     def clone(self):
         """
         Make a Deep Copy of This Object
@@ -154,8 +152,10 @@ class Grid:
 
         return changed
 
-    # Return All Available Moves
     def get_available_moves(self):
+        """
+        Returns list og available moves
+        """
         available_moves = []
 
         for dir in [UP, DOWN, LEFT, RIGHT]:
@@ -165,15 +165,38 @@ class Grid:
 
         return available_moves
 
-if __name__ == "__main__":
-    g = Grid(4,4)
-    g._map = [
-    [8, 4, 2, 2],
-    [2, 8, 4, 2],
-    [8, 64, 16, 2],
-    [2, 4, 128, 8]
-    ] 
-    print(g)
-    print(g.get_max_tile())
 
+def merge(line):
+    """
+    Helper function that merges a single row or column in 2048
+    """
+    non_zeros = []
+    zeros = []
+    tiles = []
+    actual_is_tiled = False
+
+    for number in line:
+        if number != 0:
+            non_zeros.append(number)
+        else:
+            zeros.append(0)
+
+    for index in range(len(non_zeros)):
+        actual = non_zeros[index]
+
+        if actual_is_tiled:
+            zeros.append(0)
+            actual_is_tiled = False
+        
+        elif index < len(non_zeros) - 1:
+            next_num=non_zeros[index + 1]
+            if actual != next_num:
+                tiles.append(actual)
+            else:
+                tiles.append(actual + next_num)
+                actual_is_tiled = True
+        else:
+            tiles.append(actual)
+
+    return tiles + zeros
 

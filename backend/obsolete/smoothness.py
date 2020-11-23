@@ -1,3 +1,9 @@
+"""
+Smoothes score to be used in heuristic.
+
+Obsolete. Not used in current heuristic function.
+"""
+
 from math import log as log
 
 def smoothness(grid):

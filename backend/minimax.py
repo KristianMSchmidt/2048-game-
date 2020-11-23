@@ -1,14 +1,10 @@
 """
-Minimax
+Get AI-move by recursive, depth-limited minimax search with alpha-beta pruning
 """
-import time
-import random
+from time import time
+from heuristic import heuristic
 
-# Time Limit For Each Move
-time_limit = 10
- 
-    
-def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, first_move, players_turn, do_pruning = True):
+def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, first_move, players_turn, do_pruning = True):
     """
     Recursive Depth-Limited minimax search with alpha-beta-pruning.
     Returns (best_score, best_move) found, given the specified depth.
@@ -16,10 +12,13 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, first_move, pla
     alpha is least value that a maximing player (perhaps in a higher layer) is already guaranteed to get
     beta is the best value that a minimizing player (perhaps in a higher layer) is already guaranteed to get 
     """
-    if time.time() - start_time > time_limit:
+
+    if time() - start_time > time_limit:
         # If no more time, raise exeption. 
         # This will immediately stop the search at the current depth level. 
-        raise Exception
+        # print("No more time")
+        raise Exception("No more time")
+
     if do_pruning:
         assert alpha < beta
 
@@ -43,10 +42,10 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, first_move, pla
 
             if first_move == None:
                 # Computers turn (the minimizing player). Returns the worst case scenario after current move
-                score, move =  minimax_alpha_beta_DLS(child,depth-1,alpha, beta, start_time, first_move = move, players_turn = False, do_pruning = do_pruning)
+                score, move =  minimax_alpha_beta_DLS(child,depth-1, alpha, beta, start_time, time_limit, first_move = move, players_turn = False, do_pruning = do_pruning)
             else: 
                 # Computers turn - returns the worst case scenario after current move
-                score, move =  minimax_alpha_beta_DLS(child, depth - 1, alpha, beta, start_time, first_move = first_move, players_turn = False, do_pruning = do_pruning)
+                score, move =  minimax_alpha_beta_DLS(child, depth - 1, alpha, beta, start_time, time_limit, first_move = first_move, players_turn = False, do_pruning = do_pruning)
                 
             if score >= max_score:
                 max_score = score
@@ -72,7 +71,7 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, first_move, pla
                 child = grid.clone()
                 for tile_value in [2, 4]: # computer sets 2 and 4 in free cell
                     child.set_tile(cell[0], cell[1], tile_value)
-                    score, _ = minimax_alpha_beta_DLS(child, depth - 1, alpha,beta, start_time, first_move, players_turn = True, do_pruning = do_pruning)
+                    score, _ = minimax_alpha_beta_DLS(child, depth - 1, alpha,beta, start_time, time_limit, first_move, players_turn = True, do_pruning = do_pruning)
                     if score <= min_score:
                         min_score = score
                     beta = min(beta, score)    
@@ -86,8 +85,9 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, first_move, pla
         return min_score, first_move
 
 
+
 if __name__ == "__main__":
-    from Grid import Grid
+    from Grid import Grid    
     grid = Grid(4,4)
     grid._map = [
             [0,2,30,2],
@@ -95,16 +95,17 @@ if __name__ == "__main__":
             [8,14,20,26],
             [10,2,22,28]
         ]   
-    
-    start_time = time.time()     
-    actual = minimax_alpha_beta_DLS(grid, depth = 12, alpha = -float('inf'), 
-            beta = float('inf'), start_time = time.time(), first_move = 2,
-             players_turn = False, do_pruning = False)
-    print(time.time()-start_time)
-    
-    start_time = time.time()     
-    actual = minimax_alpha_beta_DLS(grid, depth = 12, alpha = -float('inf'), 
-            beta = float('inf'), start_time = time.time(), first_move = 2,
-             players_turn = False, do_pruning = True)
-    print(time.time()-start_time)
-    
+
+    def test_time():   
+        start_time = time.time()     
+        actual = minimax_alpha_beta_DLS(grid, depth = 12, alpha = -float('inf'), 
+                beta = float('inf'), start_time = time.time(), first_move = 2,
+                players_turn = False, do_pruning = False)
+        print(time.time()-start_time)
+        
+        start_time = time.time()     
+        actual = minimax_alpha_beta_DLS(grid, depth = 12, alpha = -float('inf'), 
+                beta = float('inf'), start_time = time.time(), first_move = 2,
+                players_turn = False, do_pruning = True)
+        print(time.time()-start_time)
+        
