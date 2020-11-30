@@ -5,8 +5,11 @@ class AI_player:
     """
     Class to control AI moves and gameplay.
     """
-    def __init__(self):        
-        self.grid = Grid(4,4)
+    def __init__(self, grid = None):
+        if grid:
+            self.grid = grid
+        else:          
+            self.grid = Grid(4,4)
         self.game_over = False
         self.time_limit = 0.6  # seconds for each move
 
