@@ -2,6 +2,6 @@
 
 Web app with an AI-player for the 2048-game
 
-The AI-player is using minimax-search and different heuristics to choose next moves.
+The AI-player is using minimax-search and different heuristics to choose next move.
 
 http://kristianmschmidt.pythonanywhere.com/2048
