@@ -1,13 +1,14 @@
 """
-Unit testing of all functions, classes and modules
+Unit testing of back-end (all functions, classes and methods)
 """
 import unittest
-from Grid import Grid, UP, DOWN, LEFT, RIGHT, merge
-from gradient_heuristic import v1, v2, v3, v4, v5, v6, v7, gradient_heuristic
-from heuristic import heuristic
-from minimax import minimax_alpha_beta_DLS
 from time import time
-from get_move import get_move
+
+from backend.Grid import Grid, UP, DOWN, LEFT, RIGHT, merge
+from backend.gradient_heuristic import v1, v2, v3, v4, v5, v6, v7, gradient_heuristic
+from backend.heuristic import heuristic
+from backend.minimax import minimax_alpha_beta_DLS
+from backend.get_move import get_move
     
 class test_heuristics(unittest.TestCase):
 
@@ -714,5 +715,6 @@ class test_minimax(unittest.TestCase):
         ] 
         self.assertEqual(get_move(g), None)
 
-unittest.main()
+if __name__ == "__main__":
+    unittest.main()
    

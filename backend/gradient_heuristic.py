@@ -65,8 +65,3 @@ def gradient_heuristic(grid):
     
     return best_score
 
-
-if __name__ == "__main__":
-    from Grid import Grid
-    g = Grid(4, 4)
-    print(gradient_heuristic(g))

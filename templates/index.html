@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="title-area">
+    <h1>2048</h1>
+    <h3>Join the numbers and get to the 2048 tile <br>...or watch the AI-player do its best.</h3>
+</div>
+
+<div class="vertical-flex-container">
+    <div style="display:inline">
+    <input type="button" id="new_game_btn" value="New Game">
+    {% if data['agent'] == 'human' %}
+        <input type="button" id="run_stop_ai_btn" value="Run AI">
+    {% else %}
+        <input type="button" id="run_stop_ai_btn" value="Stop AI">
+    {% endif %}
+</div>
+
+    <h2 id="game-over-message"></h2>
+    
+    <div class="grid" id="grid">
+        {% for i in range(4) %}
+            {% for j in range(4) %}
+                {% if data["grid"][i][j] != 0 %}
+                    <div class="tile_value_{{data["grid"][i][j]|string}}">{{data["grid"][i][j]}}</div>
+                {% else %}
+                   <div class="tile_value_0"></div>
+                {% endif %}   
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div> 
+
+<form method="post" action="{{ url_for('index') }}" id="form">
+    <input type="hidden" name="json_data" id="json_data" value = "">
+</form>
+
+<script>js_data = JSON.parse('{{ data | tojson | safe}}')</script>  
+<script src= "../static/js/eventlisteners.js"></script>
+<script src= "../static/js/main.js"></script>
+
+{% endblock body %}
