@@ -12,7 +12,7 @@ OFFSETS = {UP: (1, 0), DOWN: (-1, 0), LEFT: (0, 1), RIGHT: (0, -1)}
 
 class Grid:
     """
-    Class to control the basic game logic - moves, new tiles, etc.
+    Class to control the basic game logistics - moves, new tiles, etc.
     """
     def __init__(self, grid_height, grid_width):
         """

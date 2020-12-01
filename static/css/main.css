@@ -1,0 +1,176 @@
+/* Click Watch Sass in VSC when working on this file */
+* {
+  margin: 0;
+  font-family: "Courier New", Courier, monospace;
+  padding: 0;
+}
+
+html {
+  background-color: #faf8ef;
+  color: #000;
+}
+
+.title-area {
+  text-align: center;
+  padding-left: 0.8em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.vertical-flex-container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  /*horizontally centers the content items of the vertical flex boxes */
+  padding-bottom: 0em;
+}
+
+.vertical-flex-container input {
+  margin-top: 0.6em;
+  height: 30px;
+  width: 160px;
+  border-radius: 60px;
+  font-size: 20px;
+  background-color: #f5f5f5;
+  color: set-text-clor(#f5f5f5);
+}
+
+.vertical-flex-container #game-over-message {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  color: red;
+}
+
+.vertical-flex-container input:focus {
+  outline: none;
+}
+
+.vertical-flex-container input:active {
+  background-color: #f5f5f5;
+  color: white;
+}
+
+.grid {
+  display: -ms-grid;
+  display: grid;
+  border-radius: 5px;
+  border: 1px solid black;
+  /*gap: 0.2em;*/
+  width: 360px;
+  height: 360px;
+  background-color: #ffefd5;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+  -ms-grid-rows: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.grid > div {
+  border-radius: 3px;
+  margin: 3px;
+  padding: 13px;
+  text-align: center;
+  border: 1px solid black;
+  font-weight: 600;
+}
+
+.grid > div.tile_value_0 {
+  background-color: #fff8dc;
+}
+
+.grid > div.tile_value_2 {
+  font-size: 3em;
+  background-color: #f5deb3;
+  color: #000;
+}
+
+.grid > div.tile_value_4 {
+  font-size: 3em;
+  background-color: #d2b48c;
+  color: #000;
+}
+
+.grid > div.tile_value_8 {
+  font-size: 3em;
+  background-color: #ffa07a;
+  color: #000;
+}
+
+.grid > div.tile_value_16 {
+  font-size: 2.7em;
+  padding-top: 15px;
+  background-color: #daa520;
+  color: #fff;
+}
+
+.grid > div.tile_value_32 {
+  font-size: 2.7em;
+  padding-top: 15px;
+  background-color: #ffd700;
+  color: #fff;
+}
+
+.grid > div.tile_value_64 {
+  font-size: 2.7em;
+  padding-top: 15px;
+  background-color: #ffa500;
+  color: #fff;
+}
+
+.grid > div.tile_value_128 {
+  font-size: 2em;
+  padding-top: 20px;
+  background-color: #ff8c00;
+  color: #fff;
+}
+
+.grid > div.tile_value_256 {
+  font-size: 2em;
+  padding-top: 20px;
+  background-color: #fa8072;
+  color: #000;
+}
+
+.grid > div.tile_value_512 {
+  font-size: 2em;
+  padding-top: 20px;
+  background-color: #ff4500;
+  color: #fff;
+}
+
+.grid > div.tile_value_1024 {
+  font-size: 1.3em;
+  padding-top: 27px;
+  background-color: red;
+  color: #fff;
+}
+
+.grid > div.tile_value_2048 {
+  font-size: 1.3em;
+  padding-top: 27px;
+  background-color: #ff1493;
+  color: #000;
+}
+
+.grid > div.tile_value_4096 {
+  font-size: 1.3em;
+  padding-top: 27px;
+  background-color: blue;
+  color: #fff;
+}
+
+.grid > div.tile_value_8192 {
+  font-size: 1.3em;
+  padding-top: 27px;
+  background-color: purple;
+  color: #fff;
+}
+/*# sourceMappingURL=main.css.map */

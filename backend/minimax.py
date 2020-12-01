@@ -2,7 +2,7 @@
 Get AI-move by recursive, depth-limited minimax search with alpha-beta pruning
 """
 from time import time
-from heuristic import heuristic
+from backend.heuristic import heuristic
 
 def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, first_move, players_turn, do_pruning = True):
     """
