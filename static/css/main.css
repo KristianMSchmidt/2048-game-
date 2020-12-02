@@ -14,7 +14,7 @@ html {
   text-align: center;
   padding-left: 0.8em;
   margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
 }
 
 .vertical-flex-container {
@@ -44,8 +44,8 @@ html {
 }
 
 .vertical-flex-container #game-over-message {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
   color: red;
 }
 
