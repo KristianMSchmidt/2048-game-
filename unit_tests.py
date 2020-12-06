@@ -536,7 +536,7 @@ class test_minimax(unittest.TestCase):
         child_12_4_val = heuristic(child_12_4)
 
         # computer chooses minimal value
-        val = min(child_00_2_val, child_00_4_val, child_12_2_val, child_12_4_val)
+        val = min(0.9*child_00_2_val + 0.1* child_00_4_val, 0.9*child_12_2_val +  0.1* child_12_4_val)
         expected = val, UP
         actual = minimax_alpha_beta_DLS(grid, depth = 1, alpha = -float('inf'), 
                     beta = float('inf'), start_time = time(),time_limit = 5, first_move = UP, players_turn = False)
@@ -584,7 +584,7 @@ class test_minimax(unittest.TestCase):
         UP4_val = heuristic(child_up_4)
 
         # Computer chooses lowest score in UP branch
-        UP_val = min(UP2_val, UP4_val) 
+        UP_val = 0.9*UP2_val + 0.1*UP4_val 
         actual = minimax_alpha_beta_DLS(child_up, depth = 2, alpha = -float('inf'), 
                     beta = float('inf'), start_time = time(),time_limit = 5, first_move = UP, players_turn = False)
         expected = (UP_val, UP)
@@ -637,7 +637,7 @@ class test_minimax(unittest.TestCase):
         self.assertEqual(actual, expected)      
 
         #computer chooses min value in left-branch
-        LEFT_val = min(LEFT2_val, LEFT4_val)
+        LEFT_val = 0.9*LEFT2_val + 0.1* LEFT4_val
         expected = LEFT_val, LEFT
         actual = minimax_alpha_beta_DLS(child_left, depth = 2, alpha = -float('inf'), 
                     beta = float('inf'), start_time = time(),time_limit = 5, first_move = LEFT, players_turn = False)
@@ -661,12 +661,13 @@ class test_minimax(unittest.TestCase):
         ]       
         
         with_pruning = minimax_alpha_beta_DLS(grid, depth = 5, alpha = -float('inf'), 
-                beta = float('inf'), start_time = time(), time_limit = 10,
-                first_move = None, players_turn = True, do_pruning = False)
+                beta = float('inf'), start_time = time(), time_limit = 5,
+                first_move = None, players_turn = True, do_pruning = True)
         
         no_pruning = minimax_alpha_beta_DLS(grid, depth = 5, alpha = -float('inf'), 
                 beta = float('inf'), start_time = time(), time_limit = 5,
-                first_move = None, players_turn = True, do_pruning = True)
+                first_move = None, players_turn = True, do_pruning = False)
+        
         self.assertEqual(with_pruning, no_pruning)
 
         grid = Grid(4,4)
@@ -678,12 +679,12 @@ class test_minimax(unittest.TestCase):
         ]       
 
         with_pruning = minimax_alpha_beta_DLS(grid, depth = 3, alpha = -float('inf'), 
-                beta = float('inf'), start_time = time(), time_limit = 5,
-                first_move = None, players_turn = True, do_pruning = False)
+                beta = float('inf'), start_time = time(), time_limit = 10,
+                first_move = None, players_turn = True, do_pruning = True)
         
         no_pruning = minimax_alpha_beta_DLS(grid, depth = 3, alpha = -float('inf'), 
-                beta = float('inf'), start_time = time(), time_limit = 5,
-                first_move = None, players_turn = True, do_pruning = True)
+                beta = float('inf'), start_time = time(), time_limit = 10,
+                first_move = None, players_turn = True, do_pruning = False)
         self.assertEqual(with_pruning, no_pruning)
 
 
@@ -696,11 +697,34 @@ class test_minimax(unittest.TestCase):
 
         with_pruning = minimax_alpha_beta_DLS(grid, depth = 3, alpha = -float('inf'), 
                 beta = float('inf'), start_time = time(), time_limit = 5,
-                first_move = None, players_turn = True, do_pruning = False)
+                first_move = None, players_turn = True, do_pruning = True)
         
         no_pruning = minimax_alpha_beta_DLS(grid, depth = 3, alpha = -float('inf'), 
                 beta = float('inf'), start_time = time(), time_limit = 5,
+                first_move = None, players_turn = True, do_pruning = False)
+
+        self.assertEqual(with_pruning, no_pruning)
+        
+        grid = Grid(4,4)
+        
+
+        with_pruning = minimax_alpha_beta_DLS(grid, depth = 4, alpha = -float('inf'), 
+                beta = float('inf'), start_time = time(), time_limit = 5,
                 first_move = None, players_turn = True, do_pruning = True)
+        
+        no_pruning = minimax_alpha_beta_DLS(grid, depth = 4, alpha = -float('inf'), 
+                beta = float('inf'), start_time = time(), time_limit = 5,
+                first_move = None, players_turn = True, do_pruning = False)
+        self.assertEqual(with_pruning, no_pruning)
+        
+        
+        with_pruning = minimax_alpha_beta_DLS(grid, depth = 4, alpha = -float('inf'), 
+                beta = float('inf'), start_time = time(), time_limit = 5,
+                first_move = None, players_turn = False, do_pruning = True)
+        
+        no_pruning = minimax_alpha_beta_DLS(grid, depth = 4, alpha = -float('inf'), 
+                beta = float('inf'), start_time = time(), time_limit = 5,
+                first_move = None, players_turn = False, do_pruning = False)
         self.assertEqual(with_pruning, no_pruning)
 
     def test_get_move(self):

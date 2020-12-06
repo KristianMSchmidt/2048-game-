@@ -14,17 +14,19 @@ def get_move(grid, time_limit = 0.6):
     Should return 1, 2, 3 or 4 (UP, DOWN, LEFT or RIGHT).
     Or None, if no available moves (game over)
     """
-    if not grid.get_available_moves():
+    available_moves = grid.get_available_moves()
+    
+    if not available_moves:
         return None
 
     start_time = time()
-    best_move = random_choice(grid.get_available_moves()) # This is important, as search might return None
+    best_move = random_choice(available_moves) # This is important, as search might return None
     score_of_best_move = None
     alpha = - float('inf')   #Best choice for max so far in search
     beta = float('inf')     #Best choice for min so far in search
     time_spend = time() - start_time
     depth = 0
-    
+       
     while True:
         try:
             depth += 1

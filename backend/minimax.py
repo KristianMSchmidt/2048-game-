@@ -9,7 +9,7 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
     Recursive Depth-Limited minimax search with alpha-beta-pruning.
     Returns (best_score, best_move) found, given the specified depth.
 
-    alpha is least value that a maximing player (perhaps in a higher layer) is already guaranteed to get
+    alpha is best value that a maximing player (perhaps in a higher layer) is already guaranteed to get
     beta is the best value that a minimizing player (perhaps in a higher layer) is already guaranteed to get 
     """
 
@@ -20,10 +20,12 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
         raise Exception("No more time")
 
     if do_pruning:
-        assert alpha < beta
+        pass
+        #assert alpha < beta
 
     if depth == 0:
         # recursion stops here
+        print("depth 0", heuristic(grid), "alpha=", alpha, "beta=", beta)
         return heuristic(grid), first_move
 
     if players_turn: 
@@ -31,7 +33,7 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
         moves = grid.get_available_moves()
 
         if moves == []:
-            return -float('inf'), first_move
+            return -10000, first_move
         
         max_score = - float('inf')
         max_move = None
@@ -52,11 +54,13 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
                 max_move = move
 
             alpha = max(alpha, max_score)     
+            print("player", "depth=", depth, score, "alpha=", alpha, "beta=", beta)
             
             if do_pruning and beta <= alpha:
-                #print("Beta cuf off!", alpha, beta)
+                #
+                print("Beta cuf off!", alpha, beta)
                 # The reason for the cut is, that the maximizing player will end up with a value
-                # that is bigger than the beta, that the minimizing player in alayer above is guaranteed 
+                # that is bigger than the beta, that the minimizing player in a layer above is already guaranteed 
                 #to get. So this whole branch is irrelevant. 
                 break # cut of branch 
 
@@ -69,15 +73,27 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
             min_score = float('inf')
             for cell in cells: 
                 child = grid.clone()
-                for tile_value in [2, 4]: # computer sets 2 and 4 in free cell
-                    child.set_tile(cell[0], cell[1], tile_value)
-                    score, _ = minimax_alpha_beta_DLS(child, depth - 1, alpha,beta, start_time, time_limit, first_move, players_turn = True, do_pruning = do_pruning)
-                    if score <= min_score:
-                        min_score = score
-                    beta = min(beta, score)    
-                    if do_pruning and beta <= alpha:
-                        #print("Alpha cuf off!", alpha, beta)
-                        return min_score #cut of branch
+                print(cell, 2)
+                child.set_tile(cell[0], cell[1], 2)
+                score_2, _ = minimax_alpha_beta_DLS(child, depth - 1, alpha,beta, start_time, time_limit, first_move, players_turn = True, do_pruning = do_pruning)
+                
+                
+                print(cell, 4)
+                
+                child = grid.clone()
+                child.set_tile(cell[0], cell[1], 4)
+                score_4, _ = minimax_alpha_beta_DLS(child, depth - 1, alpha,beta, start_time, time_limit, first_move, players_turn = True, do_pruning = do_pruning)
+                
+                score = 0.1*score_4 + 0.9*score_2  # expected value (10% chance for 2, 90% chance for 4)
+
+                if score <= min_score:
+                    min_score = score
+                beta = min(beta, min_score)   
+                print("computer","depth=", depth, cell, "expecte=", score, "alpha=", alpha, "beta=", beta)
+
+                if do_pruning and beta <= alpha:
+                    print("Alpha cuf off!", alpha, beta)
+                    return min_score #cut of branch
             return min_score
             
         cells = grid.get_available_cells()  #There will always be at least one available cell after a player move
@@ -85,27 +101,3 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
         return min_score, first_move
 
 
-
-if __name__ == "__main__":
-    from Grid import Grid    
-    grid = Grid(4,4)
-    grid._map = [
-            [0,2,30,2],
-            [2,16,18,4],
-            [8,14,20,26],
-            [10,2,22,28]
-        ]   
-
-    def test_time():   
-        start_time = time.time()     
-        actual = minimax_alpha_beta_DLS(grid, depth = 12, alpha = -float('inf'), 
-                beta = float('inf'), start_time = time.time(), first_move = 2,
-                players_turn = False, do_pruning = False)
-        print(time.time()-start_time)
-        
-        start_time = time.time()     
-        actual = minimax_alpha_beta_DLS(grid, depth = 12, alpha = -float('inf'), 
-                beta = float('inf'), start_time = time.time(), first_move = 2,
-                players_turn = False, do_pruning = True)
-        print(time.time()-start_time)
-        
