@@ -9,10 +9,6 @@ This ensures both monotonicity and an effort to merge high value tiles whenever 
 After many other attempts, this simple heuristic have proven empirically to be quite good 
 """
 from backend.gradient_heuristic import gradient_heuristic
-from backend.tile_score import tile_score
-from backend.gradient_heuristic2 import gradient_heuristic2
-from backend.gradient_heuristic3 import gradient_heuristic3
-from backend.smoothness__ import smoothness
 
 def square_sum(grid):
     """
