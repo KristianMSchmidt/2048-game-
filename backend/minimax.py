@@ -31,7 +31,7 @@ def minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, time_limit, fir
         moves = grid.get_available_moves()
 
         if moves == []:
-            return heuristic(grid), first_move
+            return -float('inf'), first_move
         
         max_score = - float('inf')
         max_move = None
