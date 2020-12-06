@@ -11,8 +11,6 @@ from backend.minimax import minimax_alpha_beta_DLS
 from backend.get_move import get_move
     
 class test_heuristics(unittest.TestCase):
-    
-    
 
     def test_minimax__aplha_beta_DLS(self):
         
@@ -24,16 +22,16 @@ class test_heuristics(unittest.TestCase):
             [2, 2, 0, 0],
             [2, 2, 8, 4]
         ]    
-        with_pruning = minimax_alpha_beta_DLS(grid, depth = 2, alpha = -float('inf'), 
-                beta = float('inf'), start_time = time(), time_limit = 10,
-                first_move = UP, players_turn = False, do_pruning =True)
-        print("Pruning", with_pruning)
+        #with_pruning = minimax_alpha_beta_DLS(grid, depth = 2, alpha = -float('inf'), 
+         #       beta = float('inf'), start_time = time(), time_limit = 10,
+          #      first_move = UP, players_turn = False, do_pruning =True)
+        #print("Pruning", with_pruning)
         
         no_pruning = minimax_alpha_beta_DLS(grid, depth = 2, alpha = -float('inf'), 
-               beta = float('inf'), start_time = time(), time_limit = 10,
+               beta = float('inf'), start_time = time(), time_limit = 15,
                 first_move = UP, players_turn = False, do_pruning = False)
-        #print("No pruning", no_pruning)
-        self.assertEqual(with_pruning, no_pruning)
+        print("No pruning", no_pruning)
+        #self.assertEqual(with_pruning, no_pruning)
         
               # Now we test, that alpha-beta-pruning does not affect resulting score and move 
         grid = Grid(4,4)
@@ -44,9 +42,9 @@ class test_heuristics(unittest.TestCase):
             [2,0,16,8]
         ]       
         
-        with_pruning = minimax_alpha_beta_DLS(grid, depth = 5, alpha = -float('inf'), 
-                beta = float('inf'), start_time = time(), time_limit = 15,
-                first_move = None, players_turn = True, do_pruning = True)
+        #with_pruning = minimax_alpha_beta_DLS(grid, depth = 5, alpha = -float('inf'), 
+         #       beta = float('inf'), start_time = time(), time_limit = 15,
+          #      first_move = None, players_turn = True, do_pruning = True)
         
        # no_pruning = minimax_alpha_beta_DLS(grid, depth = 5, alpha = -float('inf'), 
         #""        beta = float('inf'), start_time = time(), time_limit = 15,

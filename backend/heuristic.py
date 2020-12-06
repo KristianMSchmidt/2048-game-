@@ -15,15 +15,12 @@ def square_sum(grid):
     Calcultates the sum of the squared tile-values.
     """
     squaresum = 0
-    max_tile = 2
     for row in range(4):
         for col in range(4):
             tile_val = grid.get_tile(row, col) 
             squaresum += tile_val**2
-            if tile_val > max_tile:
-                max_tile = tile_val
             
-    return max_tile, squaresum
+    return squaresum
 
 
 def heuristic(grid):
@@ -44,9 +41,9 @@ def heuristic(grid):
       (2048,1816),(2048,1883)(4096,3101),(4096,3572),(8192,4619)]
       """
     if len(grid.get_available_moves()) == 0:
-        return -10000  # game over is bad
+        return 0  # game over is bad
     gh = gradient_heuristic(grid)
-    max_tile, ss = square_sum(grid)
+    ss = square_sum(grid)
     
     score = gh*ss   # I multiply the gradient score (monotonicity) by the value of 
                                   # max_tile/10 to ensure a somewhat constant ratio between gh and ss
@@ -67,7 +64,7 @@ def heuristic_alternative(grid):
     
     """
     if len(grid.get_available_moves()) == 0:
-        return -10000  # game over is bad
+        return 0  # game over is bad
     gh = gradient_heuristic(grid)
     max_tile, ss = square_sum(grid)
 
