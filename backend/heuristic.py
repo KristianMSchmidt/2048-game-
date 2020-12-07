@@ -39,6 +39,8 @@ def heuristic(grid):
       WITH EXPECTED VALUE: 
       [(1024,950)(1024,963)(1024,974)(2048,1520)(2048,1797)
       (2048,1816),(2048,1883)(4096,3101),(4096,3572),(8192,4619)]
+      WITH EXPECTED VALUE AND PRUNING
+      [(2048, 1845), (4096, 3268), (2048, 1641), (2048, 1818), (4096, 3401)]
       """
     if len(grid.get_available_moves()) == 0:
         return 0  # game over is bad

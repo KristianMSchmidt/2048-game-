@@ -18,7 +18,8 @@ def get_move(grid, time_limit = 0.6):
     
     if not available_moves:
         return None
-
+    alpha = -float('inf')
+    beta = float('inf')
     start_time = time()
     best_move = random_choice(available_moves) # This is important, as search might return None
     score_of_best_move = None
@@ -28,8 +29,8 @@ def get_move(grid, time_limit = 0.6):
     while True:
         try:
             depth += 1
-            score, move = minimax_alpha_beta_DLS(grid, depth, start_time, 
-                time_limit, first_move=None, players_turn=True)
+            score, move = minimax_alpha_beta_DLS(grid, depth, alpha, beta, start_time, 
+                time_limit, first_move=None, players_turn=True, do_pruning = True)
             if move:
                 best_move = move
                 score_of_best_move = score

@@ -22,16 +22,19 @@ class test_heuristics(unittest.TestCase):
             [8,16,0,8],
             [2,2,16,0]
         ]
-        """
+        
         with_pruning = minimax_alpha_beta_DLS(grid, depth = 4, alpha = -float('inf'), 
                 beta = float('inf'), start_time = time(), time_limit = 15,
                 first_move = None, players_turn = False, do_pruning = True)
-        """
+        
+        
         no_pruning = minimax_alpha_beta_DLS(grid, depth = 4, alpha = -float('inf'), 
                 beta = float('inf'), start_time = time(), time_limit = 15,
                 first_move = None, players_turn = False, do_pruning = False)
         
-        #self.assertEqual(with_pruning, no_pruning)
+        
+        self.assertEqual(with_pruning, no_pruning)
+    
         
         """
         grid2 = grid.clone()
