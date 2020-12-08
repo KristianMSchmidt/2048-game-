@@ -10,8 +10,7 @@ Grids like this one will get a high score, and will thus be favored by the AI-pl
 2  2 0 0.
 
 The weights could probably be fined tuned to get even better results, but the values below have
-proven to work quite well (they are good enough to get to the 2048-tile in most games; sometimes even to 
-the 4096-tile). I wonder if fine tuning could be done by Reinforcement Learning?
+proven to work quite well
 """
 
 # Weights 
