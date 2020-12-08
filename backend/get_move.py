@@ -24,7 +24,6 @@ def get_move(grid, time_limit = 0.6):
     start_time = time()
     #best_move = random_choice(available_moves) # This is important, as search might return None
     score_of_best_move = None
-    time_spend = time() - start_time
     depth = 0
        
     while True:
@@ -36,7 +35,6 @@ def get_move(grid, time_limit = 0.6):
                 best_move = move
                 score_of_best_move = score
                 #print(depth, best_move, score_of_best_move)
-            time_spend = time() - start_time
         except:
             break
     info = "Best move:{} Score:{} Depth:{} Time Spend: {}".format(best_move, score_of_best_move, depth-1, time()- start_time)

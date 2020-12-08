@@ -1,5 +1,5 @@
 """
-Get AI-move by recursive, depth-limited minimax search
+Get AI-move by recursive, depth-limited mini-max search
 """
 from time import time
 from backend.heuristic import heuristic
