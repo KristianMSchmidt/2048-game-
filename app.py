@@ -9,22 +9,21 @@
 import json
 from flask import Flask, render_template, request
 from backend.Grid import Grid, UP, DOWN, LEFT, RIGHT
-from backend.get_move import get_move
 from backend.Game import Game
 
 app = Flask('__name__')
+
+TIME_LIMIT = 0.6 # How much time does AI-player have pr move?
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
     
     if request.method == 'GET':
         action = "new_game"
-        agent = "human"
    
     else: 
         data = json.loads(request.form["json_data"])   #return(json.dumps(data))
         action = data["requested_action"]
-        agent = data["agent"]
 
     if action == 'new_game': 
         grid = Grid(4,4)
@@ -41,7 +40,7 @@ def index():
         data['agent'] = 'ai'
         grid = Grid(4,4)
         grid._map = data["grid"]
-        game = Game(grid, time_limit = 0.5) #ai has 1 second pr move
+        game = Game(grid, time_limit = TIME_LIMIT) 
         game.make_ai_move()
         data["grid"] = game.grid._map    
         if game.game_over: 

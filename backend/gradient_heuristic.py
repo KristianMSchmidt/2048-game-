@@ -1,6 +1,6 @@
 """
-This function assigns high values to grid-positions, where tiles with heigh values
-are concentrated in one of the four corners. Assures "monotonicity" of grid.
+This function assigns high values to grid-positions, where tile-values grow toward one
+of the four corners - i.e. it encourage "monotonicity" of the grid. 
 
 Grids like this one will get a high score, and will thus be favored by the AI-player
 
@@ -15,13 +15,12 @@ the 4096-tile). I wonder if fine tuning could be done by Reinforcement Learning?
 """
 
 # Weights 
-v1 = 1.5**6
-v2 = 1.5**5
-v25 = 1.5**4
-v3 = 1.5**3
-v4 = 1.5**2
-v5 = 1.5
-v6 = 1
+v1 = 11.4 #1.5**6
+v2 = 7.6 #1.5**5
+v3 = 3.4 # 1.5**3
+v4 = 2.2  #1.5**2
+v5 = 1.5   #1.5
+v6 = 1   #1
 v7 = 0
 
 # Gradient tables

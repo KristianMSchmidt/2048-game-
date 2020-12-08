@@ -53,6 +53,7 @@ class Game:
                     print(self.grid)
                 move_num += 1
         print("Game over")
+        return self.grid.get_max_tile(), move_num
 
              
 
