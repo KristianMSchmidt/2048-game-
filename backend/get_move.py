@@ -13,16 +13,16 @@ def get_move(grid, time_limit = 0.6):
     Iterative deepening depth-first-search.
     
     Should return 1, 2, 3 or 4 (UP, DOWN, LEFT or RIGHT).
-    Or None, if no available moves (game over)
+    Or "None, Game over" if no available moves (game over)
     """
     available_moves = grid.get_available_moves()
     
     if not available_moves:
-        return None
+        return None, "Game over"
     alpha = -float('inf')
     beta = float('inf')
     start_time = time()
-    #best_move = random_choice(available_moves) # This is important, as search might return None
+    best_move =  random_choice(available_moves) # This is important, as search might return None
     score_of_best_move = None
     depth = 0
        
@@ -37,8 +37,8 @@ def get_move(grid, time_limit = 0.6):
                 #print(depth, best_move, score_of_best_move)
         except:
             break
+    
     info = "Best move:{} Score:{} Depth:{} Time Spend: {}".format(best_move, score_of_best_move, depth-1, time()- start_time)
-    print(info)
     return best_move, info
 
 

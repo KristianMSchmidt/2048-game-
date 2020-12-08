@@ -32,9 +32,10 @@ class Game:
         if direction:  # if direction is none, the game is over
             self.grid.move(direction) 
             self.grid.new_tile() # After each move, add a new tile
-            return direction, info
         else: 
             self.game_over = True
+        return direction, info
+
             
     def autoplay(self, verbose = True):
         """
@@ -46,7 +47,7 @@ class Game:
             print(self.grid)
         move_num = 1
         while not self.game_over:
-            direction = self.make_ai_move()
+            direction, info = self.make_ai_move()
             if direction: 
                 if verbose: 
                     print('Move #{}. Direction: {}. Grid after move:'.format(move_num, direction_names[direction]))

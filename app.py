@@ -27,7 +27,7 @@ def index():
 
     if action == 'new_game': 
         grid = Grid(4,4)
-        #grid._map = [[2,4,8,16],[32,64,128,256],[512,1024,2048,4096],[8192,0,0,0]]
+        #grid._map = [[2,3,8,16],[32,64,128,256],[512,1024,2048,4096],[8192,2,3,0]]
         
         data = {
             "agent": "human",
@@ -40,8 +40,10 @@ def index():
         data['agent'] = 'ai'
         grid = Grid(4,4)
         grid._map = data["grid"]
+        print(grid)
         game = Game(grid, time_limit = TIME_LIMIT) 
         direction, info = game.make_ai_move()
+        print(direction, info)
         data["grid"] = game.grid._map
         data["search_info"] = info    
         if game.game_over: 
