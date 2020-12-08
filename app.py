@@ -41,8 +41,9 @@ def index():
         grid = Grid(4,4)
         grid._map = data["grid"]
         game = Game(grid, time_limit = TIME_LIMIT) 
-        game.make_ai_move()
-        data["grid"] = game.grid._map    
+        direction, info = game.make_ai_move()
+        data["grid"] = game.grid._map
+        data["search_info"] = info    
         if game.game_over: 
             data["game_over"] = True
             data["agent"] = "human"

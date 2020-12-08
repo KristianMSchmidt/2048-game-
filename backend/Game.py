@@ -27,12 +27,12 @@ class Game:
         """
         Calculate ai move, make move & update grid with new tile. 
         """
-        direction = get_move(self.grid, self.time_limit)  # this merely calculates the move
+        direction, info = get_move(self.grid, self.time_limit)  # this merely calculates the move
     
         if direction:  # if direction is none, the game is over
             self.grid.move(direction) 
             self.grid.new_tile() # After each move, add a new tile
-            return direction
+            return direction, info
         else: 
             self.game_over = True
             
