@@ -1,6 +1,7 @@
 """
 Decide next move for AI player by using minimax-algorithm at still deeper levels of search
-until time limit is reached.
+until time limit is reached. The chosen move will be the one reached a the deepest level of
+search.
 """
 from backend.minimax import minimax_alpha_beta_DLS 
 from time import time as time

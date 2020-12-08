@@ -1,5 +1,5 @@
 """
-Unit testing of back-end (all functions, classes and methods)
+Unit testing of backend (all functions, classes and methods)
 """
 import unittest
 from time import time
@@ -9,94 +9,10 @@ from backend.gradient_heuristic import v1, v2, v3, v4, v5, v6, v7, gradient_heur
 from backend.heuristic import heuristic
 from backend.minimax import minimax_alpha_beta_DLS
 from backend.get_move import get_move
-    
-class test_heuristics(unittest.TestCase):
 
-    def test_get_max_tile(self):
-        g = Grid(4,4)
-
-        g._map = [
-            [2,2,4,2],
-            [2,2,2,2],
-            [2,2,2,2],
-            [2,2,2,2]
-        ]
-        self.assertEqual(g.get_max_tile(),4)
-
-        g._map = [   
-            [2,2,4,2],
-            [2,2,2048,2],
-            [2,8,2,2],
-            [2,2,2,2]
-        ]
-        self.assertEqual(g.get_max_tile(),2048)
-    
-    def test_get_available_cells(self):
-        grid = Grid(4,4)
-        grid._map = [
-            [0,0,0,2],
-            [0,1,0,0],
-            [0,0,0,0],
-            [0,0,0,1]
-        ]
-        self.assertEqual(len(grid.get_available_cells()),13)
-    
-    def test_gradient_heuristic(self):
-        grid = Grid(4,4)
-        grid._map = [
-            [2,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0]
-        ]
-        expected = (v1*2)
-        actual = gradient_heuristic(grid)
-        self.assertEqual(actual, expected)
-        grid._map = [
-            [2,2,0,0],
-            [4,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0]
-        ]
-        expected = (v1*2 + v2*2 + v2*4)
-        actual = gradient_heuristic(grid)
-        self.assertEqual(actual, expected)
-
-
-        grid._map = [
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,10,0],
-            [0,0,0,0]
-        ]
-        expected = (v3*10)
-        actual = gradient_heuristic(grid)
-        self.assertEqual(actual, expected)
-
-        grid._map = [
-            [4,2,0,0],
-            [2,0,0,0],
-            [0,0,10,0],
-            [0,0,0,0]
-        ]
-        tile_sum = 18
-        expected = (v1*4 + v2*2 + v2*2 + v5*10)
-        actual = gradient_heuristic(grid)
-        self.assertEqual(actual, expected)
-
-        grid._map = [
-            [4,2,0,0],
-            [2,0,0,0],
-            [0,0,0,0],
-            [0,0,0,10]
-        ]
-        expected = v1*10 + v6*2 + v6*2 + v7*4
-
-        actual = gradient_heuristic(grid)
-        self.assertAlmostEqual(actual, expected)
 
 class test_grid(unittest.TestCase):
-
+    
     def test_merge(self):
         """ 
         Testing the merge function 
@@ -437,6 +353,91 @@ class test_grid(unittest.TestCase):
         clone.move(UP)
         self.assertNotEqual(clone._map, g._map)
 
+class test_heuristics(unittest.TestCase):
+
+    def test_get_max_tile(self):
+        g = Grid(4,4)
+
+        g._map = [
+            [2,2,4,2],
+            [2,2,2,2],
+            [2,2,2,2],
+            [2,2,2,2]
+        ]
+        self.assertEqual(g.get_max_tile(),4)
+
+        g._map = [   
+            [2,2,4,2],
+            [2,2,2048,2],
+            [2,8,2,2],
+            [2,2,2,2]
+        ]
+        self.assertEqual(g.get_max_tile(),2048)
+    
+    def test_get_available_cells(self):
+        grid = Grid(4,4)
+        grid._map = [
+            [0,0,0,2],
+            [0,1,0,0],
+            [0,0,0,0],
+            [0,0,0,1]
+        ]
+        self.assertEqual(len(grid.get_available_cells()),13)
+    
+    def test_gradient_heuristic(self):
+        grid = Grid(4,4)
+        grid._map = [
+            [2,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]
+        ]
+        expected = (v1*2)
+        actual = gradient_heuristic(grid)
+        self.assertEqual(actual, expected)
+        grid._map = [
+            [2,2,0,0],
+            [4,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]
+        ]
+        expected = (v1*2 + v2*2 + v2*4)
+        actual = gradient_heuristic(grid)
+        self.assertEqual(actual, expected)
+
+
+        grid._map = [
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,10,0],
+            [0,0,0,0]
+        ]
+        expected = (v3*10)
+        actual = gradient_heuristic(grid)
+        self.assertEqual(actual, expected)
+
+        grid._map = [
+            [4,2,0,0],
+            [2,0,0,0],
+            [0,0,10,0],
+            [0,0,0,0]
+        ]
+        tile_sum = 18
+        expected = (v1*4 + v2*2 + v2*2 + v5*10)
+        actual = gradient_heuristic(grid)
+        self.assertEqual(actual, expected)
+
+        grid._map = [
+            [4,2,0,0],
+            [2,0,0,0],
+            [0,0,0,0],
+            [0,0,0,10]
+        ]
+        expected = v1*10 + v6*2 + v6*2 + v7*4
+
+        actual = gradient_heuristic(grid)
+        self.assertAlmostEqual(actual, expected)
+
 class test_minimax(unittest.TestCase):
         
     def test_minimax__aplha_beta_DLS(self):
@@ -768,7 +769,6 @@ class test_minimax(unittest.TestCase):
 
         self.assertEqual(with_pruning, no_pruning)
         
-
 
     def test_get_move(self):
         g = Grid(4,4)
