@@ -39,6 +39,7 @@ def get_move(grid, time_limit = 0.6):
             break
     
     info = "Best move:{} Score:{} Depth:{} Time Spend: {}".format(best_move, score_of_best_move, depth-1, time()- start_time)
+    print(info)
     return best_move, info
 
 
