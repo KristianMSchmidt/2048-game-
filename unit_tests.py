@@ -772,16 +772,14 @@ class test_minimax(unittest.TestCase):
 
     def test_get_move(self):
         g = Grid(4,4)
-
-        #Game over should return none
+        #Game over - should return 
         g._map = [
             [16,2,30,2],
             [4,12,18,4],
             [8,14,2,26],
             [10,2,22,28]
         ] 
-        self.assertEqual(get_move(g), None)
-
+        self.assertEqual(get_move(g), (None, 'Game over')) 
 if __name__ == "__main__":
     unittest.main()
    
