@@ -11,3 +11,5 @@ mini-max search, the minimizing and maximazing agents are choosing their moves b
 the known 10%-90% distribution of 2-tiles and 4-tiles.
 
 http://kristianmschmidt.pythonanywhere.com/twentyfortyeight
+
+I originally made a version of the backend to this project as an assignment to the online 'micro-master in Artificial intelligence' at Columbia University. Since then I've fine-tuned the algorithms, added the expected-value considerations and connected the backend to a front-end using Flask. 
