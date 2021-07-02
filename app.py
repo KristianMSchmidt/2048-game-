@@ -13,9 +13,9 @@ app = Flask('__name__')
 
 TIME_LIMIT = 0.6 # How much time does AI-player have pr move?
 
+
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    
     if request.method == 'GET':
         action = "new_game"
    
@@ -41,11 +41,14 @@ def index():
         game = Game(grid, time_limit = TIME_LIMIT) 
         direction, info = game.make_ai_move()
         data["grid"] = game.grid._map
+        print(game.grid._map)
         data["search_info"] = info    
         if game.game_over: 
             data["game_over"] = True
             data["agent"] = "human"
-                
+
+        return render_template("grid.html", data = data)
+    
     elif action == 'stop_ai':
         data['agent'] = 'human'
     
