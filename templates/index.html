@@ -18,7 +18,6 @@
         <input type="button" onclick="new_game()" value="New Game" id="new_game_btn">
         <input type="button" onclick="run_ai()" value="Run AI" id="run_ai_btn">
         <input type="button" onclick="pause_ai()" value="Pause AI" style="display:none" id="pause_ai_btn">
-        <h2 id="game-over-message" style="visibility:hidden">GAME OVER</h2>
 
         <div class="grid" id="grid">
             {% for i in range(4) %} {% for j in range(4) %}
@@ -28,6 +27,7 @@
         <br>
         <p style="font-size:1.5em" id="help">Use arrow keys</p>
         <p style="font-size:5em" id="arrow"></p>
+        <h2 id="game-over-message" style="visibility:hidden">GAME OVER</h2>
 
     </div>
 
@@ -37,11 +37,11 @@
     <!-- Custom JS -->
     <script>
         function pause_ai() {
-            PAUSE = true
-            document.getElementById("help").style.display = "";
-            document.getElementById("arrow").innerHTML = "";
+            pause = true
+            document.getElementById("help").style.display = ""; // show help text
+            document.getElementById("arrow").innerHTML = ""; // hide arrow
             document.getElementById("new_game_btn").disabled = false;
-            document.getElementById("run_ai_btn").style.display = "";
+            document.getElementById("run_ai_btn").style.display = ""; // show run ai button
             document.getElementById("pause_ai_btn").style.display = "none";
         }
 
@@ -61,10 +61,17 @@
         }
 
         function new_game() {
+            game_over = false
+            pause = true // ai is paused at the beginning
             document.getElementById("help").style.display = "";
             document.getElementById("arrow").innerHTML = "";
+            document.getElementById("arrow").style.display = "";
             document.getElementById("game-over-message").style.visibility = "hidden";
+            document.getElementById("run_ai_btn").style.display = "";
+            document.getElementById("pause_ai_btn").style.display = "none";
             document.getElementById("run_ai_btn").disabled = false;
+            document.getElementById("pause_ai_btn").disabled = false;
+
             $.ajax({
                 type: 'GET',
                 url: "{{ url_for('new_game') }}",
@@ -76,11 +83,26 @@
             });
         }
 
+        function update_ui(data) {
+            document.getElementById("arrow").innerHTML = data['direction']
+            grid = data["grid"]
+            fill_grid(data["grid"])
+            if (data['game_over']) {
+                document.getElementById("game-over-message").style.visibility = "visible";
+                document.getElementById("run_ai_btn").disabled = true;
+                document.getElementById("pause_ai_btn").disabled = true;
+                document.getElementById("arrow").style.display = "none";
+                document.getElementById("new_game_btn").disabled = false;
+                game_over = true;
+            }
+        }
+
         function human_move(direction) {
-            document.getElementById("help").style.display = "none";
-            if (!PAUSE) {
-                pause_ai()
-            } else {
+            if (!game_over) {
+                if (!pause) {
+                    pause_ai()
+                }
+                document.getElementById("help").style.display = "none";
                 $.ajax({
                     type: 'POST',
                     url: "{{ url_for('human_move') }}",
@@ -90,23 +112,18 @@
                     },
                     dataType: 'json',
                     success: function(data) {
-                        document.getElementById("arrow").innerHTML = data['direction']
-                        if (data['game_over']) {
-                            document.getElementById("game-over-message").style.visibility = "visible";
-                            document.getElementById("run_ai_btn").disabled = true;
-                        } else {
-                            grid = data["grid"]
-                            fill_grid(data["grid"])
-                        }
+                        update_ui(data)
                     }
                 });
             }
         }
 
         function run_ai() {
+            pause = false
             document.getElementById("new_game_btn").disabled = true;
+            document.getElementById("pause_ai_btn").style.display = "";
+            document.getElementById("run_ai_btn").style.display = "none";
             document.getElementById("help").style.display = "none";
-            PAUSE = false
             $.ajax({
                 type: 'POST',
                 url: "{{ url_for('ai_move') }}",
@@ -115,19 +132,12 @@
                 },
                 dataType: 'json',
                 success: function(data) {
-                    document.getElementById("arrow").innerHTML = data['direction']
-                    if (data['game_over']) {
-                        document.getElementById("game-over-message").style.visibility = "visible";
-                        document.getElementById("run_ai_btn").disabled = true;
+                    if (pause) {
+                        pause_ai()
                     } else {
-                        grid = data['grid']
-                        fill_grid(data['grid'])
-                        document.getElementById("pause_ai_btn").style.display = '';
-                        document.getElementById("run_ai_btn").style.display = "none";
-                        if (!PAUSE) {
+                        update_ui(data)
+                        if (!data["game_over"]) {
                             run_ai()
-                        } else {
-                            pause_ai()
                         }
                     }
                 }
@@ -165,7 +175,6 @@
             });
         }
 
-        PAUSE = true // ai is paused at the beginning
         add_eventlisteners()
         new_game()
     </script>
