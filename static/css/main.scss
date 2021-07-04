@@ -1,198 +1,111 @@
-/* Click Watch Sass in VSC when working on this file */
-
-$backgr-color: #faf8ef;
-$text-color: #776e65;
-$button-color: #f5f5f5;
-$grid-backgr-color: #ffefd5;
-$tile-0-color: #fff8dc;
-$tile-2-color: #f5deb3;
-$tile-4-color: #d2b48c;
-$tile-8-color: #ffa07a;
-$tile-16-color: #daa520;
-$tile-32-color: #ffd700;
-$tile-64-color: #ffa500;
-$tile-128-color: #ff8c00;
-$tile-256-color: #fa8072;
-$tile-512-color: #ff4500;
-$tile-1024-color: red;
-$tile-2048-color: #ff1493;
-$tile-4096-color: blue;
-$tile-8192-color: purple;
-// Set Text Color
-@function set-text-color($color) {
-    @if (lightness($color) >50) {
-        @return #000;
+    /* Click Watch Sass in VSC when working on this file */
+    
+    $backgr-color: #faf8ef;
+    $text-color: #776e65;
+    $button-color: #f5f5f5;
+    $grid-backgr-color: #ffefd5;
+    $tile-0-color: #fff8dc;
+    $tile-2-color: #f5deb3;
+    $tile-4-color: #d2b48c;
+    $tile-8-color: #ffa07a;
+    $tile-16-color: #daa520;
+    $tile-32-color: #ffd700;
+    $tile-64-color: #ffa500;
+    $tile-128-color: #ff8c00;
+    $tile-256-color: #fa8072;
+    $tile-512-color: #ff4500;
+    $tile-1024-color: red;
+    $tile-2048-color: #ff1493;
+    $tile-4096-color: blue;
+    $tile-8192-color: purple;
+    // Set Text Color
+    @function set-text-color($color) {
+        @if (lightness($color) >50) {
+            @return #000;
+        }
+        @else {
+            @return #fff;
+        }
     }
-    @else {
-        @return #fff;
+    
+    * {
+        margin: 0;
+        font-family: "Courier New", Courier, monospace;
+        padding: 0;
     }
-}
-
-* {
-    margin: 0;
-    font-family: "Courier New", Courier, monospace;
-    padding: 0;
-}
-
-h1 {
-    margin-top: 1em;
-}
-
-h4 {
-    margin-bottom: 1em;
-    padding-left: 2em;
-    padding-right: 2em;
-}
-
-html {
-    background-color: $backgr-color;
-    color: set-text-color($backgr-color);
-}
-
-.vertical-flex-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    /*horizontally centers the content items of the vertical flex boxes */
-    padding-bottom: 0em;
-    input {
-        margin-top: 0.6em;
-        height: 30px;
-        width: 160px;
-        border-radius: 60px;
-        font-size: 20px;
-        background-color: $button-color;
-        color: set-text-clor($button-color);
+    
+    h1 {
+        margin-top: 1em;
     }
-    #game-over-message {
-        margin-top: 0.4em;
-        margin-bottom: 0.4em;
-        color: red;
+    
+    h4 {
+        margin-bottom: 1em;
+        padding-left: 2em;
+        padding-right: 2em;
     }
-    input:focus {
-        outline: none;
+    
+    html {
+        background-color: $backgr-color;
+        color: set-text-color($backgr-color);
     }
-    input:active {
-        background-color: $button_color;
-        color: white;
+    
+    #help {
+        font-size: 1.5em;
     }
-}
-
-.grid {
-    display: grid;
-    border-radius: 5px;
-    border: 1px solid black;
-    /*gap: 0.2em;*/
-    width: 200px;
-    height: 200px;
-    background-color: $grid-backgr-color;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    >div {
-        border-radius: 3px;
-        margin: 1px;
-        padding: 6px;
+    
+    #arrow {
+        font-size: 2em;
+        @media (min-width: 370px) {
+            font-size: 4em;
+        }
+    }
+    
+    .vertical-flex-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
-        border: 1px solid black;
-        font-weight: 600;
-        &.tile_value_0 {
-            background-color: $tile-0-color;
+        /*horizontally centers the content items of the vertical flex boxes */
+        padding-bottom: 0em;
+        input {
+            margin-top: 0.6em;
+            height: 30px;
+            width: 160px;
+            border-radius: 60px;
+            font-size: 20px;
+            background-color: $button-color;
+            color: set-text-clor($button-color);
         }
-        &.tile_value_2 {
-            font-size: 1.5em;
-            padding-top: 13px;
-            background-color: $tile-2-color;
-            color: set-text-color($tile-2-color);
+        #game-over-message {
+            margin-top: 0.4em;
+            margin-bottom: 0.4em;
+            color: red;
         }
-        &.tile_value_4 {
-            font-size: 1.5em;
-            padding-top: 13px;
-            background-color: $tile-4-color;
-            color: set-text-color($tile-4-color);
+        input:focus {
+            outline: none;
         }
-        &.tile_value_8 {
-            font-size: 1.5em;
-            padding-top: 13px;
-            background-color: $tile-8-color;
-            color: set-text-color($tile-8-color);
-        }
-        &.tile_value_16 {
-            font-size: 1.3em;
-            padding-top: 11px;
-            background-color: $tile-16-color;
-            color: set-text-color($tile-16-color);
-        }
-        &.tile_value_32 {
-            font-size: 1.3em;
-            padding-top: 11px;
-            background-color: $tile-32-color;
-            color: set-text-color($tile-32-color);
-        }
-        &.tile_value_64 {
-            font-size: 1.3em;
-            padding-top: 11px;
-            background-color: $tile-64-color;
-            color: set-text-color($tile-64-color);
-        }
-        &.tile_value_128 {
-            font-size: 1em;
-            padding-top: 13px;
-            background-color: $tile-128-color;
-            color: set-text-color($tile-128-color);
-        }
-        &.tile_value_256 {
-            font-size: 1em;
-            padding-top: 13px;
-            background-color: $tile-256-color;
-            color: set-text-color($tile-256-color);
-        }
-        &.tile_value_512 {
-            font-size: 1em;
-            padding-top: 13px;
-            background-color: $tile-512-color;
-            color: set-text-color($tile-512-color);
-        }
-        &.tile_value_1024 {
-            font-size: 0.9em;
-            padding-top: 14px;
-            background-color: $tile-1024-color;
-            color: set-text-color($tile-1024-color);
-        }
-        &.tile_value_2048 {
-            font-size: 0.9em;
-            padding-top: 14px;
-            background-color: $tile-2048-color;
-            color: set-text-color($tile-2048-color);
-        }
-        &.tile_value_4096 {
-            font-size: 0.9em;
-            padding-top: 14px;
-            background-color: $tile-4096-color;
-            color: set-text-color($tile-4096-color);
-        }
-        &.tile_value_8192 {
-            font-size: 0.9em;
-            padding-top: 14px;
-            background-color: $tile-8192-color;
-            color: set-text-color($tile-8192-color);
+        input:active {
+            background-color: $button_color;
+            color: white;
         }
     }
-    @media (min-width: 370px) {
+    
+    .grid {
         display: grid;
         border-radius: 5px;
         border: 1px solid black;
+        margin-top: 2em;
         /*gap: 0.2em;*/
-        width: 360px;
-        height: 360px;
+        width: 200px;
+        height: 200px;
         background-color: $grid-backgr-color;
         grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr 1fr;
         >div {
             border-radius: 3px;
-            margin: 3px;
-            padding: 13px;
+            margin: 1px;
+            padding: 6px;
             text-align: center;
             border: 1px solid black;
             font-weight: 600;
@@ -200,80 +113,179 @@ html {
                 background-color: $tile-0-color;
             }
             &.tile_value_2 {
-                font-size: 3em;
+                font-size: 1.5em;
+                padding-top: 13px;
                 background-color: $tile-2-color;
                 color: set-text-color($tile-2-color);
             }
             &.tile_value_4 {
-                font-size: 3em;
+                font-size: 1.5em;
+                padding-top: 13px;
                 background-color: $tile-4-color;
                 color: set-text-color($tile-4-color);
             }
             &.tile_value_8 {
-                font-size: 3em;
+                font-size: 1.5em;
+                padding-top: 13px;
                 background-color: $tile-8-color;
                 color: set-text-color($tile-8-color);
             }
             &.tile_value_16 {
-                font-size: 2.7em;
-                padding-top: 15px;
+                font-size: 1.3em;
+                padding-top: 11px;
                 background-color: $tile-16-color;
                 color: set-text-color($tile-16-color);
             }
             &.tile_value_32 {
-                font-size: 2.7em;
-                padding-top: 15px;
+                font-size: 1.3em;
+                padding-top: 11px;
                 background-color: $tile-32-color;
                 color: set-text-color($tile-32-color);
             }
             &.tile_value_64 {
-                font-size: 2.7em;
-                padding-top: 15px;
+                font-size: 1.3em;
+                padding-top: 11px;
                 background-color: $tile-64-color;
                 color: set-text-color($tile-64-color);
             }
             &.tile_value_128 {
-                font-size: 2em;
-                padding-top: 20px;
+                font-size: 1em;
+                padding-top: 13px;
                 background-color: $tile-128-color;
                 color: set-text-color($tile-128-color);
             }
             &.tile_value_256 {
-                font-size: 2em;
-                padding-top: 20px;
+                font-size: 1em;
+                padding-top: 13px;
                 background-color: $tile-256-color;
                 color: set-text-color($tile-256-color);
             }
             &.tile_value_512 {
-                font-size: 2em;
-                padding-top: 20px;
+                font-size: 1em;
+                padding-top: 13px;
                 background-color: $tile-512-color;
                 color: set-text-color($tile-512-color);
             }
             &.tile_value_1024 {
-                font-size: 1.3em;
-                padding-top: 27px;
+                font-size: 0.9em;
+                padding-top: 14px;
                 background-color: $tile-1024-color;
                 color: set-text-color($tile-1024-color);
             }
             &.tile_value_2048 {
-                font-size: 1.3em;
-                padding-top: 27px;
+                font-size: 0.9em;
+                padding-top: 14px;
                 background-color: $tile-2048-color;
                 color: set-text-color($tile-2048-color);
             }
             &.tile_value_4096 {
-                font-size: 1.3em;
-                padding-top: 27px;
+                font-size: 0.9em;
+                padding-top: 14px;
                 background-color: $tile-4096-color;
                 color: set-text-color($tile-4096-color);
             }
             &.tile_value_8192 {
-                font-size: 1.3em;
-                padding-top: 27px;
+                font-size: 0.9em;
+                padding-top: 14px;
                 background-color: $tile-8192-color;
                 color: set-text-color($tile-8192-color);
             }
         }
+        @media (min-width: 370px) {
+            display: grid;
+            border-radius: 5px;
+            border: 1px solid black;
+            /*gap: 0.2em;*/
+            width: 360px;
+            height: 360px;
+            background-color: $grid-backgr-color;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr 1fr;
+            >div {
+                border-radius: 3px;
+                margin: 3px;
+                padding: 13px;
+                text-align: center;
+                border: 1px solid black;
+                font-weight: 600;
+                &.tile_value_0 {
+                    background-color: $tile-0-color;
+                }
+                &.tile_value_2 {
+                    font-size: 3em;
+                    background-color: $tile-2-color;
+                    color: set-text-color($tile-2-color);
+                }
+                &.tile_value_4 {
+                    font-size: 3em;
+                    background-color: $tile-4-color;
+                    color: set-text-color($tile-4-color);
+                }
+                &.tile_value_8 {
+                    font-size: 3em;
+                    background-color: $tile-8-color;
+                    color: set-text-color($tile-8-color);
+                }
+                &.tile_value_16 {
+                    font-size: 2.7em;
+                    padding-top: 15px;
+                    background-color: $tile-16-color;
+                    color: set-text-color($tile-16-color);
+                }
+                &.tile_value_32 {
+                    font-size: 2.7em;
+                    padding-top: 15px;
+                    background-color: $tile-32-color;
+                    color: set-text-color($tile-32-color);
+                }
+                &.tile_value_64 {
+                    font-size: 2.7em;
+                    padding-top: 15px;
+                    background-color: $tile-64-color;
+                    color: set-text-color($tile-64-color);
+                }
+                &.tile_value_128 {
+                    font-size: 2em;
+                    padding-top: 20px;
+                    background-color: $tile-128-color;
+                    color: set-text-color($tile-128-color);
+                }
+                &.tile_value_256 {
+                    font-size: 2em;
+                    padding-top: 20px;
+                    background-color: $tile-256-color;
+                    color: set-text-color($tile-256-color);
+                }
+                &.tile_value_512 {
+                    font-size: 2em;
+                    padding-top: 20px;
+                    background-color: $tile-512-color;
+                    color: set-text-color($tile-512-color);
+                }
+                &.tile_value_1024 {
+                    font-size: 1.3em;
+                    padding-top: 27px;
+                    background-color: $tile-1024-color;
+                    color: set-text-color($tile-1024-color);
+                }
+                &.tile_value_2048 {
+                    font-size: 1.3em;
+                    padding-top: 27px;
+                    background-color: $tile-2048-color;
+                    color: set-text-color($tile-2048-color);
+                }
+                &.tile_value_4096 {
+                    font-size: 1.3em;
+                    padding-top: 27px;
+                    background-color: $tile-4096-color;
+                    color: set-text-color($tile-4096-color);
+                }
+                &.tile_value_8192 {
+                    font-size: 1.3em;
+                    padding-top: 27px;
+                    background-color: $tile-8192-color;
+                    color: set-text-color($tile-8192-color);
+                }
+            }
+        }
     }
-}

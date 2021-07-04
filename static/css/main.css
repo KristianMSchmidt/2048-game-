@@ -20,6 +20,20 @@ html {
   color: #000;
 }
 
+#help {
+  font-size: 1.5em;
+}
+
+#arrow {
+  font-size: 2em;
+}
+
+@media (min-width: 370px) {
+  #arrow {
+    font-size: 4em;
+  }
+}
+
 .vertical-flex-container {
   width: 100%;
   display: -webkit-box;
@@ -67,6 +81,7 @@ html {
   display: grid;
   border-radius: 5px;
   border: 1px solid black;
+  margin-top: 2em;
   /*gap: 0.2em;*/
   width: 200px;
   height: 200px;
