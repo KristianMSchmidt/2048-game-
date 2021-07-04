@@ -25,8 +25,8 @@
             {% endfor %} {% endfor %}
         </div>
         <br>
-        <p style="font-size:1.5em" id="help">Use arrow keys</p>
-        <p style="font-size:5em" id="arrow"></p>
+        <p id="help">Use arrow keys</p>
+        <p id="arrow"></p>
         <h2 id="game-over-message" style="visibility:hidden">GAME OVER</h2>
 
     </div>
@@ -60,6 +60,20 @@
             }
         }
 
+        function update_ui(data) {
+            document.getElementById("arrow").innerHTML = data['direction']
+            grid = data["grid"]
+            fill_grid(data["grid"])
+            if (data['game_over']) {
+                document.getElementById("game-over-message").style.visibility = "visible";
+                document.getElementById("run_ai_btn").disabled = true;
+                document.getElementById("pause_ai_btn").disabled = true;
+                document.getElementById("arrow").style.display = "none";
+                document.getElementById("new_game_btn").disabled = false;
+                game_over = true;
+            }
+        }
+
         function new_game() {
             game_over = false
             pause = true // ai is paused at the beginning
@@ -81,20 +95,6 @@
                     fill_grid(grid)
                 }
             });
-        }
-
-        function update_ui(data) {
-            document.getElementById("arrow").innerHTML = data['direction']
-            grid = data["grid"]
-            fill_grid(data["grid"])
-            if (data['game_over']) {
-                document.getElementById("game-over-message").style.visibility = "visible";
-                document.getElementById("run_ai_btn").disabled = true;
-                document.getElementById("pause_ai_btn").disabled = true;
-                document.getElementById("arrow").style.display = "none";
-                document.getElementById("new_game_btn").disabled = false;
-                game_over = true;
-            }
         }
 
         function human_move(direction) {
