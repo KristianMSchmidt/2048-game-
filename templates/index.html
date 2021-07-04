@@ -1,62 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
     <title>2048</title>
- 
+
 </head>
+
 <body>
-
-    <div class="title-area">
-        <h1>2048</h1>
-        <h3>Join the numbers and get to the 2048 tile <br>...or watch the AI player do its thing.</h3>
-    </div>
-    
-
     <div class="vertical-flex-container">
-        <div style="display:inline">
-        <input type="button" id="new_game_btn" value="New Game">
-        {% if data['agent'] == 'human' %}
-            <input type="button" id="run_stop_ai_btn" value="Run AI">
-        {% else %}
-            <input type="button" id="run_stop_ai_btn" value="Stop AI">
-        {% endif %}
-    </div>
-    
-   
-    
-    <form method="post" action="{{ url_for('index') }}" id="form">
-        <input type="hidden" name="json_data" id="json_data" value = "">
-    </form>
 
-    <form hx-post="{{ url_for('index') }}" id="form2" hx-target="#mygrid" hx-swap="outerHTML" hx-trigger="every 1s">
-        <input type="hidden" name="json_data" id="json_data2" value = "">
-    </form>
+        <h1>2048</h1>
+        <h4>Join the numbers and get to the 2048 tile <br> ...or watch the AI player do its thing.</h4>
 
-     <div class="grid" id="mygrid">
-    {% for i in range(4) %}
-        {% for j in range(4) %}
-            {% if data["grid"][i][j] != 0 %}
-                <div class="tile_value_{{data["grid"][i][j]|string}}">{{data["grid"][i][j]}}</div>
-            {% else %}
-                <div class="tile_value_0"></div>
-            {% endif %}   
-        {% endfor %}
-    {% endfor %}
+        <input type="button" onclick="new_game()" value="New Game" id="new_game_btn">
+        <input type="button" onclick="run_ai()" value="Run AI" id="run_ai_btn">
+        <input type="button" onclick="pause_ai()" value="Pause AI" style="display:none" id="pause_ai_btn">
+        <h2 id="game-over-message" style="visibility:hidden">GAME OVER</h2>
+
+        <div class="grid" id="grid">
+            {% for i in range(4) %} {% for j in range(4) %}
+            <div id="grid{{i}}{{j}}"></div>
+            {% endfor %} {% endfor %}
+        </div>
+        <br>
+        <p style="font-size:1.5em" id="help">Use arrow keys</p>
+        <p style="font-size:5em" id="arrow"></p>
+
     </div>
 
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
+    <!-- Custom JS -->
     <script>
-        js_data = JSON.parse('{{ data | tojson | safe}}')
-        js_data["requested_action"] = "run_ai";
-        document.getElementById("json_data2").value = JSON.stringify(js_data);
-    </script>  
+        function pause_ai() {
+            PAUSE = true
+            document.getElementById("help").style.display = "";
+            document.getElementById("arrow").innerHTML = "";
+            document.getElementById("new_game_btn").disabled = false;
+            document.getElementById("run_ai_btn").style.display = "";
+            document.getElementById("pause_ai_btn").style.display = "none";
+        }
 
-    <script src= "../static/js/eventlisteners.js"></script>
-    <script src= "../static/js/main.js"></script>  
-    <!-- Load htmx -->
-    <script src="https://unpkg.com/htmx.org@1.4.1"></script>
+        function fill_grid(grid) {
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    element = document.getElementById("grid" + i + j)
+                    element.innerHTML = "";
+                    element.classList = []
+
+                    if (grid[i][j] != 0) {
+                        element.innerHTML = grid[i][j];
+                    }
+                    element.classList.add("tile_value_" + grid[i][j])
+                }
+            }
+        }
+
+        function new_game() {
+            document.getElementById("help").style.display = "";
+            document.getElementById("arrow").innerHTML = "";
+            document.getElementById("game-over-message").style.visibility = "hidden";
+            document.getElementById("run_ai_btn").disabled = false;
+            $.ajax({
+                type: 'GET',
+                url: "{{ url_for('new_game') }}",
+                dataType: 'json',
+                success: function(data) {
+                    grid = data["grid"]
+                    fill_grid(grid)
+                }
+            });
+        }
+
+        function human_move(direction) {
+            document.getElementById("help").style.display = "none";
+            if (!PAUSE) {
+                pause_ai()
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ url_for('human_move') }}",
+                    data: {
+                        "grid": JSON.stringify(grid),
+                        "direction": direction
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        document.getElementById("arrow").innerHTML = data['direction']
+                        if (data['game_over']) {
+                            document.getElementById("game-over-message").style.visibility = "visible";
+                            document.getElementById("run_ai_btn").disabled = true;
+                        } else {
+                            grid = data["grid"]
+                            fill_grid(data["grid"])
+                        }
+                    }
+                });
+            }
+        }
+
+        function run_ai() {
+            document.getElementById("new_game_btn").disabled = true;
+            document.getElementById("help").style.display = "none";
+            PAUSE = false
+            $.ajax({
+                type: 'POST',
+                url: "{{ url_for('ai_move') }}",
+                data: {
+                    "grid": JSON.stringify(grid)
+                },
+                dataType: 'json',
+                success: function(data) {
+                    document.getElementById("arrow").innerHTML = data['direction']
+                    if (data['game_over']) {
+                        document.getElementById("game-over-message").style.visibility = "visible";
+                        document.getElementById("run_ai_btn").disabled = true;
+                    } else {
+                        grid = data['grid']
+                        fill_grid(data['grid'])
+                        document.getElementById("pause_ai_btn").style.display = '';
+                        document.getElementById("run_ai_btn").style.display = "none";
+                        if (!PAUSE) {
+                            run_ai()
+                        } else {
+                            pause_ai()
+                        }
+                    }
+                }
+            });
+        }
+
+        function add_eventlisteners() {
+            // Disable default window scrolling on arrow-keys
+            window.addEventListener("keydown", function(e) {
+                    if ([37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+                        e.preventDefault();
+                    }
+                },
+                false
+            );
+            // Eventlisteners for arrow keys (human moves)
+            document.addEventListener('keydown', event => {
+                switch (event.keyCode) {
+                    case 37:
+                        human_move("l");
+                        break;
+
+                    case 39:
+                        human_move("r");
+                        break;
+
+                    case 38:
+                        human_move("u");
+                        break;
+
+                    case 40:
+                        human_move("d");
+                        break;
+                }
+            });
+        }
+
+        PAUSE = true // ai is paused at the beginning
+        add_eventlisteners()
+        new_game()
+    </script>
+
 </body>
+
 </html>

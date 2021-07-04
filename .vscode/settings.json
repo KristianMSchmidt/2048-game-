@@ -1,3 +1,13 @@
 {
-    "python.pythonPath": "C:\\Users\\kimar\\Anaconda3\\python.exe"
+    "workbench.settings.editor": "json",
+    "editor.formatOnSave": false,
+    "files.associations": {
+            "**/*.html": "html",
+            "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+        },
+    "beautify.language": {
+        "html": [
+            "html",
+        ]
+    },
 }
