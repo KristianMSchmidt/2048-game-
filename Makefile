@@ -10,10 +10,10 @@ help:   # Show this help.
 
 # ---------- Development ---------- #
 build:  ## Build or rebuild development docker image
-	docker-compose -f docker-compose.dev.yml build
+	docker-compose build
 
 develop:  ## Build or rebuild development docker image
-	docker-compose -f docker-compose.dev.yml up --remove-orphans
+	docker-compose up --remove-orphans
 
 
 # ---------- Testing ---------- #
