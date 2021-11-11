@@ -15,11 +15,9 @@ build:  ## Build or rebuild development docker image
 develop:  ## Build or rebuild development docker image
 	docker-compose up --remove-orphans
 
-
 # ---------- Testing ---------- #
-test: ## Run test suite
-	python unit_tests.py
-
+test: ## Execute backend test suite within a docker container
+	docker-compose run app python unit_tests.py 
 
 # ---------- Production ---------- #
 production_stop: ## Stop production server
