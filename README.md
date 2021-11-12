@@ -10,6 +10,6 @@ The game is indeterministic by nature - after each move by the player, the compu
 mini-max search, the minimizing and maximazing agents are choosing their moves based on expected values given
 the known 10%-90% distribution of 2-tiles and 4-tiles.
 
-http://kristianmschmidt.pythonanywhere.com/twentyfortyeight
+http://twentyfortyeight.kristianms.com
 
 I originally made a version of the backend to this project as an assignment to the online 'micro-master in Artificial intelligence' at Columbia University. Since then I've fine-tuned the algorithms, added expected-value considerations, designed a responsive front-end and put it all in a web app together using Flask. 
