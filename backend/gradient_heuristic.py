@@ -1,16 +1,5 @@
 """
-This function assigns high values to grid-positions, where tile-values grow toward one
-of the four corners - i.e. it encourage "monotonicity" of the grid. 
-
-Grids like this one will get a high score, and will thus be favored by the AI-player
-
-32 16 8 4
-16 8  4 2
-8  4 2 0
-2  2 0 0.
-
-The weights could probably be fined tuned to get even better results, but the values below have
-proven to work quite well
+Definition of gradient heuristic. 
 """
 
 # Weights 
@@ -47,6 +36,22 @@ LR = {(0,0):v7,    (0,1):v6,   (0,2):v5,    (0,3):v4,
       (3,0):v4,    (3,1):v3,   (3,2):v2,    (3,3):v1}
       
 def gradient_heuristic(grid):
+    """
+    Calculates and returns the maximal dot product of the grid and one of the four gradient tables above.
+    
+    This will assigns high values to grid-positions, where tile-values grow toward one
+    of the four corners - i.e. it encourage "monotonicity" of the grid. 
+    
+    Grids like this one will get a high score, and will thus be favored by the AI-player
+    
+    32 16 8 4
+    16 8  4 2
+    8  4 2 0
+    2  2 0 0.
+    
+    The weights could probably be fined tuned to get even better results, but the values below have
+    proven to work quite well
+    """
    
     ur = 0
     ul = 0
